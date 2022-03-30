@@ -51,7 +51,7 @@ public class ProveedoresController {
     }
 
     @PutMapping("/proveedores/{id}")
-    private Mono<ResponseEntity<ProveedoresModel>> updateSupplierById(@PathVariable("id") String id, ProveedoresModel proveedoresModel) {
+    private Mono<ResponseEntity<ProveedoresModel>> updateSupplierById(@PathVariable("id") String id, @RequestBody ProveedoresModel proveedoresModel) {
         return this.proveedoresService.updateSupplierById(id, proveedoresModel)
             .flatMap(proveedor -> Mono.just(ResponseEntity.ok(proveedor)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
