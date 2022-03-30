@@ -1,6 +1,7 @@
 package uy.com.sofka.stockbilling.models;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ProveedoresModel {
 
     @Id
-    private Long idProveedor;
+    private String idProveedor = UUID.randomUUID().toString().substring(0, 10);
     private String nombreProveedor;
     private String telefonoProveedor;
     private List<VolantesModel> listaVolantes;
@@ -22,7 +23,7 @@ public class ProveedoresModel {
         this.listaVolantes = listaVolantes;
     }
 
-    public Long getIdProveedor() {
+    public String getIdProveedor() {
         return idProveedor;
     }
 
@@ -38,7 +39,7 @@ public class ProveedoresModel {
         return listaVolantes;
     }
 
-    public void setIdProveedor(Long idProveedor) {
+    public void setIdProveedor(String idProveedor) {
         this.idProveedor = idProveedor;
     }
 

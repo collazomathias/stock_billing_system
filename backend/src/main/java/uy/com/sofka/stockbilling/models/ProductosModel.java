@@ -1,5 +1,7 @@
 package uy.com.sofka.stockbilling.models;
 
+import java.util.UUID;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ProductosModel {
     
     @Id
-    private Long idProducto;
+    private String idProducto = UUID.randomUUID().toString().substring(0, 10);
     private String nombreProducto;
     private Double precioProducto;
     private String descripcionProducto;
@@ -32,7 +34,7 @@ public class ProductosModel {
         return descripcionProducto;
     }
 
-    public Long getIdProducto() {
+    public String getIdProducto() {
         return idProducto;
     }
 
@@ -56,7 +58,7 @@ public class ProductosModel {
         this.descripcionProducto = descripcionProducto;
     }
 
-    public void setIdProducto(Long idProducto) {
+    public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
 
