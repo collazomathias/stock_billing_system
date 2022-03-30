@@ -1,6 +1,7 @@
 package uy.com.sofka.stockbilling.models;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class FacturasModel {
 
     @Id
-    private Long idFactura;
+    private String idFactura = UUID.randomUUID().toString().substring(0, 10);
     private String fechaFactura;
     private String nombreCliente;
     private String vendedorFactura;
@@ -30,7 +31,7 @@ public class FacturasModel {
         return fechaFactura;
     }
 
-    public Long getIdFactura() {
+    public String getIdFactura() {
         return idFactura;
     }
 
@@ -54,7 +55,7 @@ public class FacturasModel {
         this.fechaFactura = fechaFactura;
     }
 
-    public void setIdFactura(Long idFactura) {
+    public void setIdFactura(String idFactura) {
         this.idFactura = idFactura;
     }
 
