@@ -29,5 +29,22 @@ public class FacturasServiceImplementation implements FacturasService {
     public Mono<FacturasModel> getBillById(String id) {
         return this.facturasRepository.findByIdFactura(id);
     }
+
+    @Override
+    public Mono<FacturasModel> deleteBillById(String id) {
+        return this.facturasRepository.findByIdFactura(id)
+            .flatMap(factura -> this.facturasRepository.deleteById(factura.getIdFactura())
+            .thenReturn(factura));
+    }
+
+    @Override
+    public Mono<FacturasModel> updateBillById(String id, FacturasModel facturasModel) {
+        return this.facturasRepository.findByIdFactura(id)
+            .flatMap(factura -> {
+                facturasModel.setIdFactura(id);
+                return addNewBill(facturasModel);
+            })
+            .switchIfEmpty(Mono.empty());
+    }
     
 }
