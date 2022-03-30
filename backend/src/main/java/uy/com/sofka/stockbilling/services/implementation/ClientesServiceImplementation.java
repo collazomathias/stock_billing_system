@@ -26,8 +26,25 @@ public class ClientesServiceImplementation implements ClientesService {
     }
 
     @Override
-    public Mono<ClientesModel> getClientById(Long id) {
+    public Mono<ClientesModel> getClientById(String id) {
         return this.clientesRepository.findByIdCliente(id);
+    }
+
+    @Override
+    public Mono<ClientesModel> deleteClientById(String id) {
+        return this.clientesRepository.findByIdCliente(id)
+            .flatMap(cliente -> this.clientesRepository.deleteById(cliente.getIdCliente())
+            .thenReturn(cliente));
+    }
+
+    @Override
+    public Mono<ClientesModel> updateClientById(String id, ClientesModel clientesModel) {
+        return this.clientesRepository.findByIdCliente(id)
+            .flatMap(cliente -> {
+                clientesModel.setIdCliente(id);
+                return addNewClient(clientesModel);
+            })
+            .switchIfEmpty(Mono.empty());
     }
     
 }

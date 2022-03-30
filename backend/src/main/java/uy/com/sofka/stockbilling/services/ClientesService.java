@@ -8,6 +8,8 @@ public interface ClientesService {
 
     Mono<ClientesModel> addNewClient(ClientesModel clientesModel);
     Flux<ClientesModel> getAllClients();
-    Mono<ClientesModel> getClientById(Long id);
+    Mono<ClientesModel> getClientById(String id);
+    Mono<ClientesModel> deleteClientById(String id);
+    Mono<ClientesModel> updateClientById(String id, ClientesModel clientesModel);
     
 }

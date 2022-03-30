@@ -6,5 +6,7 @@ import reactor.core.publisher.Mono;
 import uy.com.sofka.stockbilling.models.ClientesModel;
 
 public interface ClientesRepository extends ReactiveMongoRepository<ClientesModel, String> {
-    Mono<ClientesModel> findByIdCliente(Long id);
+    
+    Mono<ClientesModel> findByIdCliente(String id);
+
 }
