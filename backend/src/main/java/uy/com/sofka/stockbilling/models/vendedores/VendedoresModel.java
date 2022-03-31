@@ -1,4 +1,4 @@
-package uy.com.sofka.stockbilling.models;
+package uy.com.sofka.stockbilling.models.vendedores;
 
 import java.util.UUID;
 

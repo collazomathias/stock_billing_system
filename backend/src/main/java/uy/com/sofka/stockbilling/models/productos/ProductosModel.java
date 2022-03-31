@@ -1,4 +1,4 @@
-package uy.com.sofka.stockbilling.models;
+package uy.com.sofka.stockbilling.models.productos;
 
 import java.util.UUID;
 
@@ -15,15 +15,32 @@ public class ProductosModel {
     private String descripcionProducto;
     private Long stockProducto;
     private String categoriaProducto;
+    private Long stockMinimo;
+    private Long stockMaximo;
 
     public ProductosModel(){}
 
-    public ProductosModel(String nombreProducto, Double precioProducto, String descripcionProducto, Long stockProducto, String categoriaProducto) {
+    public ProductosModel(String nombreProducto, Double precioProducto, String descripcionProducto, Long stockProducto, String categoriaProducto, Long stockMinimo, Long stockMaximo) {
         this.nombreProducto = nombreProducto;
         this.precioProducto = precioProducto;
         this.descripcionProducto = descripcionProducto;
         this.stockProducto = stockProducto;
         this.categoriaProducto = categoriaProducto;
+        this.stockMinimo = stockMinimo;
+        this.stockMaximo = stockMaximo;
+    }
+
+    public ProductosModel FacturasDTOToModel(ProductosDTO productosDTO) {
+        ProductosModel productosModel = new ProductosModel(
+            productosDTO.getNombreProducto(),
+            productosDTO.getPrecioProducto(),
+            productosDTO.getDescripcionProducto(),
+            productosDTO.getStockProducto(),
+            productosDTO.getCategoriaProducto(),
+            productosDTO.getStockMinimo(),
+            productosDTO.getStockMaximo()
+        );
+        return productosModel;
     }
 
     public String getCategoriaProducto() {
@@ -50,6 +67,14 @@ public class ProductosModel {
         return stockProducto;
     }
 
+    public Long getStockMaximo() {
+        return stockMaximo;
+    }
+
+    public Long getStockMinimo() {
+        return stockMinimo;
+    }
+
     public void setCategoriaProducto(String categoriaProducto) {
         this.categoriaProducto = categoriaProducto;
     }
@@ -68,6 +93,14 @@ public class ProductosModel {
 
     public void setPrecioProducto(Double precioProducto) {
         this.precioProducto = precioProducto;
+    }
+
+    public void setStockMaximo(Long stockMaximo) {
+        this.stockMaximo = stockMaximo;
+    }
+
+    public void setStockMinimo(Long stockMinimo) {
+        this.stockMinimo = stockMinimo;
     }
 
 }

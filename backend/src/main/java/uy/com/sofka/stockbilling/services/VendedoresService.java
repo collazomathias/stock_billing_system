@@ -2,7 +2,7 @@ package uy.com.sofka.stockbilling.services;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.VendedoresModel;
+import uy.com.sofka.stockbilling.models.vendedores.VendedoresModel;
 
 public interface VendedoresService {
 

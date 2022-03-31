@@ -1,10 +1,12 @@
-package uy.com.sofka.stockbilling.models;
+package uy.com.sofka.stockbilling.models.facturas;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import uy.com.sofka.stockbilling.models.productos.ProductosModel;
 
 @Document(collection = "facturas")
 public class FacturasModel {
@@ -25,6 +27,17 @@ public class FacturasModel {
         this.vendedorFactura = vendedorFactura;
         this.listaProductos = listaProductos;
         this.precioTotal = precioTotal;
+    }
+
+    public FacturasModel FacturasDTOToModel(FacturasDTO facturasDTO) {
+        FacturasModel facturasModel = new FacturasModel(
+            facturasDTO.getFechaFactura(),
+            facturasDTO.getNombreCliente(),
+            facturasDTO.getVendedorFactura(),
+            facturasDTO.getListaProductos(),
+            facturasDTO.getPrecioTotal()
+        );
+        return facturasModel;
     }
 
     public String getFechaFactura() {

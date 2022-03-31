@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.VendedoresModel;
+import uy.com.sofka.stockbilling.models.vendedores.VendedoresModel;
 import uy.com.sofka.stockbilling.repositories.VendedoresRepository;
 import uy.com.sofka.stockbilling.services.VendedoresService;
 
@@ -41,10 +41,11 @@ public class VendedoresServiceImplementation implements VendedoresService {
     public Mono<VendedoresModel> updateSellerById(String id, VendedoresModel vendedoresModel) {
         return this.vendedoresRepository.findByIdVendedor(id)
             .flatMap(vendedor -> {
-                vendedoresModel.setIdVendedor(id);
-                return addNewSeller(vendedoresModel);
+                vendedor.setIdVendedor(id);
+                vendedor.setNombreVendedor(vendedoresModel.getNombreVendedor());
+                return addNewSeller(vendedor);
             })
             .switchIfEmpty(Mono.empty());
     }
-
+    
 }

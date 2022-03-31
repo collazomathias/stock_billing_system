@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.ProductosModel;
+import uy.com.sofka.stockbilling.models.productos.ProductosModel;
 import uy.com.sofka.stockbilling.repositories.ProductosRepository;
 import uy.com.sofka.stockbilling.services.ProductosService;
 
@@ -41,8 +41,12 @@ public class ProductosServiceImplementation implements ProductosService {
     public Mono<ProductosModel> updateProductById(String id, ProductosModel productosModel) {
         return this.productosRepository.findByIdProducto(id)
             .flatMap(producto -> {
-                productosModel.setIdProducto(id);
-                return addNewProduct(productosModel);
+                producto.setIdProducto(id);
+                producto.setCategoriaProducto(productosModel.getCategoriaProducto());
+                producto.setDescripcionProducto(productosModel.getDescripcionProducto());
+                producto.setNombreProducto(productosModel.getNombreProducto());
+                producto.setPrecioProducto(productosModel.getPrecioProducto());
+                return addNewProduct(producto);
             })
             .switchIfEmpty(Mono.empty());
     }

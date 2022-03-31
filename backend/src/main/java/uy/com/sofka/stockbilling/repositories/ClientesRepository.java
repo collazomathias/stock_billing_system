@@ -3,7 +3,7 @@ package uy.com.sofka.stockbilling.repositories;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.ClientesModel;
+import uy.com.sofka.stockbilling.models.clientes.ClientesModel;
 
 public interface ClientesRepository extends ReactiveMongoRepository<ClientesModel, String> {
     

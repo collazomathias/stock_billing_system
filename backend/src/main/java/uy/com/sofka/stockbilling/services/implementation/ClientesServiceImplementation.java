@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.ClientesModel;
+import uy.com.sofka.stockbilling.models.clientes.ClientesDTO;
+import uy.com.sofka.stockbilling.models.clientes.ClientesModel;
 import uy.com.sofka.stockbilling.repositories.ClientesRepository;
 import uy.com.sofka.stockbilling.services.ClientesService;
 
@@ -15,34 +16,42 @@ public class ClientesServiceImplementation implements ClientesService {
     @Autowired
     private ClientesRepository clientesRepository;
 
+    ClientesDTO clientesDTO = new ClientesDTO();
+    ClientesModel clientesModel = new ClientesModel();
+
     @Override
-    public Mono<ClientesModel> addNewClient(ClientesModel clientesModel) {
-        return this.clientesRepository.save(clientesModel);
+    public Mono<ClientesDTO> addNewClient(ClientesDTO clientesDTO) {
+        Mono<ClientesModel> newClient =  clientesRepository.save(clientesModel.ClientesDTOToModel(clientesDTO));
+        return clientesDTO.ClientesModelToDTO(newClient);
     }
 
     @Override
-    public Flux<ClientesModel> getAllClients() {
-        return this.clientesRepository.findAll();
+    public Flux<ClientesDTO> getAllClients() {
+        Flux<ClientesModel> clients = clientesRepository.findAll();
+        return clientesDTO.ClientesModelListToDTO(clients);
     }
 
     @Override
-    public Mono<ClientesModel> getClientById(String id) {
-        return this.clientesRepository.findByIdCliente(id);
+    public Mono<ClientesDTO> getClientById(String id) {
+        Mono<ClientesModel> client = clientesRepository.findById(id);
+        return clientesDTO.ClientesModelToDTO(client);
     }
 
     @Override
-    public Mono<ClientesModel> deleteClientById(String id) {
+    public Mono<ClientesDTO> deleteClientById(String id) {
         return this.clientesRepository.findByIdCliente(id)
             .flatMap(cliente -> this.clientesRepository.deleteById(cliente.getIdCliente())
-            .thenReturn(cliente));
+            .thenReturn(clientesDTO.clientesToDTO(cliente)));
     }
 
     @Override
-    public Mono<ClientesModel> updateClientById(String id, ClientesModel clientesModel) {
+    public Mono<ClientesDTO> updateClientById(String id, ClientesDTO clientesDTO) {
         return this.clientesRepository.findByIdCliente(id)
             .flatMap(cliente -> {
-                clientesModel.setIdCliente(id);
-                return addNewClient(clientesModel);
+                cliente.setIdCliente(id);
+                cliente.setNombreCliente(clientesDTO.getNombreCliente());
+                cliente.setTelefonoCliente(clientesDTO.getTelefonoCliente());
+                return clientesDTO.ClientesModelToDTO(clientesRepository.save(cliente));
             })
             .switchIfEmpty(Mono.empty());
     }

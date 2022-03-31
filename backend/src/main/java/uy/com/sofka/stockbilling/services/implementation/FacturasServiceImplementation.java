@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.FacturasModel;
+import uy.com.sofka.stockbilling.models.facturas.FacturasDTO;
+import uy.com.sofka.stockbilling.models.facturas.FacturasModel;
 import uy.com.sofka.stockbilling.repositories.FacturasRepository;
 import uy.com.sofka.stockbilling.services.FacturasService;
 
@@ -15,34 +16,45 @@ public class FacturasServiceImplementation implements FacturasService {
     @Autowired
     private FacturasRepository facturasRepository;
 
+    private FacturasDTO facturasDTO = new FacturasDTO();
+    private FacturasModel facturasModel = new FacturasModel();
+
     @Override
-    public Mono<FacturasModel> addNewBill(FacturasModel facturasModel) {
-        return this.facturasRepository.save(facturasModel);
+    public Mono<FacturasDTO> addNewBill(FacturasDTO facturasDTO) {
+        Mono<FacturasModel> newBill = facturasRepository.save(facturasModel.FacturasDTOToModel(facturasDTO));
+        return facturasDTO.FacturasModelToDTO(newBill);
     }
 
     @Override
-    public Flux<FacturasModel> getAllBills() {
-        return this.facturasRepository.findAll();
+    public Flux<FacturasDTO> getAllBills() {
+        Flux<FacturasModel> bills = facturasRepository.findAll();
+        return facturasDTO.FacturasModelListToDTO(bills);
     }
 
     @Override
-    public Mono<FacturasModel> getBillById(String id) {
-        return this.facturasRepository.findByIdFactura(id);
+    public Mono<FacturasDTO> getBillById(String id) {
+        Mono<FacturasModel> bill = facturasRepository.findByIdFactura(id);
+        return facturasDTO.FacturasModelToDTO(bill);
     }
 
     @Override
-    public Mono<FacturasModel> deleteBillById(String id) {
+    public Mono<FacturasDTO> deleteBillById(String id) {
         return this.facturasRepository.findByIdFactura(id)
             .flatMap(factura -> this.facturasRepository.deleteById(factura.getIdFactura())
-            .thenReturn(factura));
+            .thenReturn(facturasDTO.FacturasToDTO(factura)));
     }
 
     @Override
-    public Mono<FacturasModel> updateBillById(String id, FacturasModel facturasModel) {
+    public Mono<FacturasDTO> updateBillById(String id, FacturasDTO facturasDTO) {
         return this.facturasRepository.findByIdFactura(id)
             .flatMap(factura -> {
-                facturasModel.setIdFactura(id);
-                return addNewBill(facturasModel);
+                factura.setIdFactura(id);
+                factura.setFechaFactura(facturasDTO.getFechaFactura());
+                factura.setListaProductos(facturasDTO.getListaProductos());
+                factura.setNombreCliente(facturasDTO.getNombreCliente());
+                factura.setVendedorFactura(facturasDTO.getVendedorFactura());
+                factura.setPrecioTotal(facturasDTO.getPrecioTotal());
+                return facturasDTO.FacturasModelToDTO(facturasRepository.save(factura));
             })
             .switchIfEmpty(Mono.empty());
     }

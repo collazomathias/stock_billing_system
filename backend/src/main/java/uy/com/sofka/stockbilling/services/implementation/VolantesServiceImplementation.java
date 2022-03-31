@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.VolantesModel;
+import uy.com.sofka.stockbilling.models.volantes.VolantesModel;
 import uy.com.sofka.stockbilling.repositories.VolantesRepository;
 import uy.com.sofka.stockbilling.services.VolantesService;
 
@@ -33,7 +33,7 @@ public class VolantesServiceImplementation implements VolantesService {
     @Override
     public Mono<VolantesModel> deleteVolanteById(String id) {
         return this.volantesRepository.findByIdVolante(id)
-            .flatMap(volante -> volantesRepository.deleteById(volante.getIdVolantes())
+            .flatMap(volante -> volantesRepository.deleteById(volante.getIdVolante())
             .thenReturn(volante));
     }
 
@@ -41,8 +41,11 @@ public class VolantesServiceImplementation implements VolantesService {
     public Mono<VolantesModel> updateVolanteById(String id, VolantesModel volantesModel) {
         return this.volantesRepository.findByIdVolante(id) 
             .flatMap(volante -> {
-                volantesModel.setIdVolantes(id);
-                return addNewVolante(volantesModel);
+                volante.setIdVolante(id);
+                volante.setFechaVolante(volantesModel.getFechaVolante());
+                volante.setIdProveedor(volantesModel.getIdProveedor());
+                volante.setListaProductos(volantesModel.getListaProductos());
+                return addNewVolante(volante);
             })
             .switchIfEmpty(Mono.empty());
     }

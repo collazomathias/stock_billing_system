@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.ProductosModel;
+import uy.com.sofka.stockbilling.models.productos.ProductosModel;
 import uy.com.sofka.stockbilling.services.ProductosService;
 
 @RestController

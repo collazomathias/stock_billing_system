@@ -1,4 +1,4 @@
-package uy.com.sofka.stockbilling.models;
+package uy.com.sofka.stockbilling.models.clientes;
 
 import java.util.UUID;
 
@@ -18,6 +18,14 @@ public class ClientesModel {
     public ClientesModel(String nombreCliente, String telefonoCliente) {
         this.nombreCliente = nombreCliente;
         this.telefonoCliente = telefonoCliente;
+    }
+
+    public ClientesModel ClientesDTOToModel(ClientesDTO clientesDTO) {
+        ClientesModel clientesModel = new ClientesModel(
+            clientesDTO.getNombreCliente(), 
+            clientesDTO.getTelefonoCliente()
+        );
+        return clientesModel;
     }
 
     public String getIdCliente() {

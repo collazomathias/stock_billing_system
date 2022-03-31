@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.FacturasModel;
+import uy.com.sofka.stockbilling.models.facturas.FacturasDTO;
 import uy.com.sofka.stockbilling.services.FacturasService;
 
 @RestController
@@ -27,31 +27,31 @@ public class FacturasController {
 
     @PostMapping("/facturas")
     @ResponseStatus(HttpStatus.CREATED)
-    private Mono<FacturasModel> addNewBill(@RequestBody FacturasModel facturasModel) {
+    private Mono<FacturasDTO> addNewBill(@RequestBody FacturasDTO facturasModel) {
         return this.facturasService.addNewBill(facturasModel);
     }
 
     @GetMapping("/facturas")
     @ResponseStatus(HttpStatus.OK)
-    private Flux<FacturasModel> getAllBills() {
+    private Flux<FacturasDTO> getAllBills() {
         return this.facturasService.getAllBills();
     }
 
     @GetMapping("/facturas/{id}")
     @ResponseStatus(HttpStatus.OK)
-    private Mono<FacturasModel> getBillById(@PathVariable("id") String id) {
+    private Mono<FacturasDTO> getBillById(@PathVariable("id") String id) {
         return this.facturasService.getBillById(id);
     }
 
     @DeleteMapping("/facturas/{id}")
-    private Mono<ResponseEntity<FacturasModel>> deleteBillById(@PathVariable("id") String id) {
+    private Mono<ResponseEntity<FacturasDTO>> deleteBillById(@PathVariable("id") String id) {
         return this.facturasService.deleteBillById(id)
             .flatMap(factura -> Mono.just(ResponseEntity.ok(factura)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @PutMapping("/facturas/{id}")
-    private Mono<ResponseEntity<FacturasModel>> updateBillById(@PathVariable("id") String id, @RequestBody FacturasModel facturasModel) {
+    private Mono<ResponseEntity<FacturasDTO>> updateBillById(@PathVariable("id") String id, @RequestBody FacturasDTO facturasModel) {
         return this.facturasService.updateBillById(id, facturasModel)
             .flatMap(factura -> Mono.just(ResponseEntity.ok(factura)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
