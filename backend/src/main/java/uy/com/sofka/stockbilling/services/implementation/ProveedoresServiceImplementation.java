@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import uy.com.sofka.stockbilling.models.proveedores.ProveedoresDTO;
 import uy.com.sofka.stockbilling.models.proveedores.ProveedoresModel;
 import uy.com.sofka.stockbilling.repositories.ProveedoresRepository;
 import uy.com.sofka.stockbilling.services.ProveedoresService;
@@ -15,37 +16,43 @@ public class ProveedoresServiceImplementation implements ProveedoresService {
     @Autowired
     private ProveedoresRepository proveedoresRepository;
 
+    private ProveedoresDTO proveedoresDTO = new ProveedoresDTO();
+    private ProveedoresModel proveedoresModel = new ProveedoresModel();
+
     @Override
-    public Mono<ProveedoresModel> addNewSupplier(ProveedoresModel proveedoresModel) {
-        return this.proveedoresRepository.save(proveedoresModel);
+    public Mono<ProveedoresDTO> addNewSupplier(ProveedoresDTO proveedores) {
+        Mono<ProveedoresModel> newSupplier = proveedoresRepository.save(proveedoresModel.ProveedoresDTOToModel(proveedores));
+        return proveedoresDTO.ProductosModelToDTO(newSupplier);
     }
 
     @Override
-    public Flux<ProveedoresModel> getAllSuppliers() {
-        return this.proveedoresRepository.findAll();
+    public Flux<ProveedoresDTO> getAllSuppliers() {
+        Flux<ProveedoresModel> suppliers = proveedoresRepository.findAll();
+        return proveedoresDTO.ProductosModelListToDTO(suppliers);
     }
 
     @Override
-    public Mono<ProveedoresModel> getSupplierById(String id) {
-        return this.proveedoresRepository.findByIdProveedor(id);
+    public Mono<ProveedoresDTO> getSupplierById(String id) {
+        Mono<ProveedoresModel> supplier = proveedoresRepository.findByIdProveedor(id);
+        return proveedoresDTO.ProductosModelToDTO(supplier);
     }
 
     @Override
-    public Mono<ProveedoresModel> deleteSupplierById(String id) {
+    public Mono<ProveedoresDTO> deleteSupplierById(String id) {
         return this.proveedoresRepository.findByIdProveedor(id)
             .flatMap(proveedor -> proveedoresRepository.deleteById(proveedor.getIdProveedor())
-            .thenReturn(proveedor));
+            .thenReturn(proveedoresDTO.ProductosToDTO(proveedor)));
     }
 
     @Override
-    public Mono<ProveedoresModel> updateSupplierById(String id, ProveedoresModel proveedoresModel) {
+    public Mono<ProveedoresDTO> updateSupplierById(String id, ProveedoresDTO proveedores) {
         return this.proveedoresRepository.findByIdProveedor(id)
             .flatMap(proveedor -> {
                 proveedor.setIdProveedor(id);
-                proveedor.setNombreProveedor(proveedoresModel.getNombreProveedor());
-                proveedor.setTelefonoProveedor(proveedoresModel.getTelefonoProveedor());
-                proveedor.setListaVolantes(proveedoresModel.getListaVolantes());
-                return addNewSupplier(proveedor);
+                proveedor.setNombreProveedor(proveedores.getNombreProveedor());
+                proveedor.setTelefonoProveedor(proveedores.getTelefonoProveedor());
+                proveedor.setListaVolantes(proveedores.getListaVolantes());
+                return proveedoresDTO.ProductosModelToDTO(proveedoresRepository.save(proveedor));
             })
             .switchIfEmpty(Mono.empty());
     }

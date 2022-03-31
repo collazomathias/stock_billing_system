@@ -25,6 +25,15 @@ public class ProveedoresModel {
         this.listaVolantes = listaVolantes;
     }
 
+    public ProveedoresModel ProveedoresDTOToModel(ProveedoresDTO proveedoresDTO) {
+        ProveedoresModel proveedoresModel = new ProveedoresModel(
+            proveedoresDTO.getNombreProveedor(),
+            proveedoresDTO.getTelefonoProveedor(),
+            proveedoresDTO.getListaVolantes()
+        );
+        return proveedoresModel;
+    }
+
     public String getIdProveedor() {
         return idProveedor;
     }

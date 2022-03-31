@@ -30,7 +30,7 @@ public class ProductosModel {
         this.stockMaximo = stockMaximo;
     }
 
-    public ProductosModel FacturasDTOToModel(ProductosDTO productosDTO) {
+    public ProductosModel ProductosDTOToModel(ProductosDTO productosDTO) {
         ProductosModel productosModel = new ProductosModel(
             productosDTO.getNombreProducto(),
             productosDTO.getPrecioProducto(),
@@ -101,6 +101,10 @@ public class ProductosModel {
 
     public void setStockMinimo(Long stockMinimo) {
         this.stockMinimo = stockMinimo;
+    }
+
+    public void setStockProducto(Long stockProducto) {
+        this.stockProducto = stockProducto;
     }
 
 }

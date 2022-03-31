@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.vendedores.VendedoresModel;
+import uy.com.sofka.stockbilling.models.vendedores.VendedoresDTO;
 import uy.com.sofka.stockbilling.services.VendedoresService;
 
 @RestController
@@ -27,32 +27,32 @@ public class VendedoresController {
 
     @PostMapping("/vendedores")
     @ResponseStatus(HttpStatus.CREATED)
-    private Mono<VendedoresModel> addNewSeller(@RequestBody VendedoresModel vendedoresModel) {
-        return this.vendedoresService.addNewSeller(vendedoresModel);
+    private Mono<VendedoresDTO> addNewSeller(@RequestBody VendedoresDTO vendedoresDTO) {
+        return this.vendedoresService.addNewSeller(vendedoresDTO);
     }
 
     @GetMapping("/vendedores")
     @ResponseStatus(HttpStatus.OK)
-    private Flux<VendedoresModel> getAllSellers() {
+    private Flux<VendedoresDTO> getAllSellers() {
         return this.vendedoresService.getAllSellers();
     }
 
     @GetMapping("/vendedores/{id}")
     @ResponseStatus(HttpStatus.OK)
-    private Mono<VendedoresModel> getSellerById(@PathVariable("id") String id) {
+    private Mono<VendedoresDTO> getSellerById(@PathVariable("id") String id) {
         return this.vendedoresService.getSellerById(id);
     }
 
     @DeleteMapping("/vendedores/{id}")
-    private Mono<ResponseEntity<VendedoresModel>> deleteSellerById(@PathVariable("id") String id) {
+    private Mono<ResponseEntity<VendedoresDTO>> deleteSellerById(@PathVariable("id") String id) {
         return this.vendedoresService.deleteSellerById(id)
             .flatMap(vendedor -> Mono.just(ResponseEntity.ok(vendedor)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @PutMapping("/vendedores/{id}")
-    private Mono<ResponseEntity<VendedoresModel>> updateSellerById(@PathVariable("id") String id, @RequestBody VendedoresModel vendedoresModel) {
-        return this.vendedoresService.updateSellerById(id, vendedoresModel)
+    private Mono<ResponseEntity<VendedoresDTO>> updateSellerById(@PathVariable("id") String id, @RequestBody VendedoresDTO vendedoresDTO) {
+        return this.vendedoresService.updateSellerById(id, vendedoresDTO)
             .flatMap(vendedor -> Mono.just(ResponseEntity.ok(vendedor)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import uy.com.sofka.stockbilling.models.productos.ProductosDTO;
 import uy.com.sofka.stockbilling.models.productos.ProductosModel;
 import uy.com.sofka.stockbilling.repositories.ProductosRepository;
 import uy.com.sofka.stockbilling.services.ProductosService;
@@ -15,38 +16,47 @@ public class ProductosServiceImplementation implements ProductosService {
     @Autowired
     private ProductosRepository productosRepository;
 
+    private ProductosDTO productosDTO = new ProductosDTO();
+    private ProductosModel productosModel = new ProductosModel();
+
     @Override
-    public Mono<ProductosModel> addNewProduct(ProductosModel productosModel) {
-        return this.productosRepository.save(productosModel);
+    public Mono<ProductosDTO> addNewProduct(ProductosDTO productos) {
+        Mono<ProductosModel> newProduct = productosRepository.save(productosModel.ProductosDTOToModel(productos));
+        return productosDTO.ProductosModelToDTO(newProduct);
     }
 
     @Override
-    public Flux<ProductosModel> getAllProducts() {
-        return this.productosRepository.findAll();
+    public Flux<ProductosDTO> getAllProducts() {
+        Flux<ProductosModel> products = productosRepository.findAll();
+        return productosDTO.ProductosModelListToDTO(products);
     }
 
     @Override
-    public Mono<ProductosModel> getProductById(String id) {
-        return this.productosRepository.findByIdProducto(id);
+    public Mono<ProductosDTO> getProductById(String id) {
+        Mono<ProductosModel> product = productosRepository.findByIdProducto(id);
+        return productosDTO.ProductosModelToDTO(product);
     }
 
     @Override
-    public Mono<ProductosModel> deleteProductById(String id) {
+    public Mono<ProductosDTO> deleteProductById(String id) {
         return this.productosRepository.findByIdProducto(id)
             .flatMap(producto -> productosRepository.deleteById(producto.getIdProducto())
-            .thenReturn(producto));
+            .thenReturn(productosDTO.ProductosToDTO(producto)));
     }
 
     @Override
-    public Mono<ProductosModel> updateProductById(String id, ProductosModel productosModel) {
+    public Mono<ProductosDTO> updateProductById(String id, ProductosDTO productos) {
         return this.productosRepository.findByIdProducto(id)
             .flatMap(producto -> {
                 producto.setIdProducto(id);
-                producto.setCategoriaProducto(productosModel.getCategoriaProducto());
-                producto.setDescripcionProducto(productosModel.getDescripcionProducto());
-                producto.setNombreProducto(productosModel.getNombreProducto());
-                producto.setPrecioProducto(productosModel.getPrecioProducto());
-                return addNewProduct(producto);
+                producto.setCategoriaProducto(producto.getCategoriaProducto());
+                producto.setDescripcionProducto(producto.getDescripcionProducto());
+                producto.setNombreProducto(producto.getNombreProducto());
+                producto.setPrecioProducto(producto.getPrecioProducto());
+                producto.setStockProducto(producto.getStockProducto());
+                producto.setStockMaximo(producto.getStockMaximo());
+                producto.setStockMinimo(producto.getStockMinimo());
+                return productosDTO.ProductosModelToDTO(productosRepository.save(producto));
             })
             .switchIfEmpty(Mono.empty());
     }

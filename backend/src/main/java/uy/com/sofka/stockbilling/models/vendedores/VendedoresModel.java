@@ -18,6 +18,13 @@ public class VendedoresModel {
         this.nombreVendedor = nombreVendedor;
     }
 
+    public VendedoresModel VendedoresDTOToModel(VendedoresDTO vendedoresDTO) {
+        VendedoresModel vendedoresModel = new VendedoresModel(
+            vendedoresDTO.getNombreVendedor()
+        );
+        return vendedoresModel;
+    }
+
     public String getIdVendedor() {
         return idVendedor;
     }

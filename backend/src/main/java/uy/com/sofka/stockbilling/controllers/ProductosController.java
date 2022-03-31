@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.productos.ProductosModel;
+import uy.com.sofka.stockbilling.models.productos.ProductosDTO;
 import uy.com.sofka.stockbilling.services.ProductosService;
 
 @RestController
@@ -27,32 +27,32 @@ public class ProductosController {
 
     @PostMapping("/productos")
     @ResponseStatus(HttpStatus.CREATED)
-    private Mono<ProductosModel> addNewProduct(@RequestBody ProductosModel productosModel) {
-        return this.productosService.addNewProduct(productosModel);
+    private Mono<ProductosDTO> addNewProduct(@RequestBody ProductosDTO productosDTO) {
+        return this.productosService.addNewProduct(productosDTO);
     }
 
     @GetMapping("/productos")
     @ResponseStatus(HttpStatus.OK)
-    private Flux<ProductosModel> getAllProducts() {
+    private Flux<ProductosDTO> getAllProducts() {
         return this.productosService.getAllProducts();
     }
 
     @GetMapping("/productos/{id}")
     @ResponseStatus(HttpStatus.OK)
-    private Mono<ProductosModel> getProductById(@PathVariable("id") String id) {
+    private Mono<ProductosDTO> getProductById(@PathVariable("id") String id) {
         return this.productosService.getProductById(id);
     }
 
     @DeleteMapping("/productos/{id}")
-    private Mono<ResponseEntity<ProductosModel>> deleteProductById(@PathVariable("id") String id) {
+    private Mono<ResponseEntity<ProductosDTO>> deleteProductById(@PathVariable("id") String id) {
         return this.productosService.deleteProductById(id)
             .flatMap(producto -> Mono.just(ResponseEntity.ok(producto)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @PutMapping("/productos/{id}")
-    private Mono<ResponseEntity<ProductosModel>> updateProductById(@PathVariable("id") String id, @RequestBody ProductosModel productosModel) {
-        return this.productosService.updateProductById(id, productosModel)
+    private Mono<ResponseEntity<ProductosDTO>> updateProductById(@PathVariable("id") String id, @RequestBody ProductosDTO productosDTO) {
+        return this.productosService.updateProductById(id, productosDTO)
             .flatMap(producto -> Mono.just(ResponseEntity.ok(producto)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }

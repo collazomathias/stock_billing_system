@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uy.com.sofka.stockbilling.models.volantes.VolantesModel;
+import uy.com.sofka.stockbilling.models.volantes.VolantesDTO;
 import uy.com.sofka.stockbilling.services.VolantesService;
 
 @RestController
@@ -27,31 +27,31 @@ public class VolantesController {
 
     @PostMapping("/volantes")
     @ResponseStatus(HttpStatus.CREATED)
-    private Mono<VolantesModel> addNewVolante(@RequestBody VolantesModel volantesModel) {
-        return this.volantesService.addNewVolante(volantesModel);
+    private Mono<VolantesDTO> addNewVolante(@RequestBody VolantesDTO volantesDTO) {
+        return this.volantesService.addNewVolante(volantesDTO);
     }
 
     @GetMapping("/volantes")
     @ResponseStatus(HttpStatus.OK)
-    private Flux<VolantesModel> getAllVolantes() {
+    private Flux<VolantesDTO> getAllVolantes() {
         return this.volantesService.getAllVolantes();
     }
 
     @GetMapping("/volantes/{id}")
     @ResponseStatus(HttpStatus.OK)
-    private Mono<VolantesModel> getVolanteById(@PathVariable("id") String id) {
+    private Mono<VolantesDTO> getVolanteById(@PathVariable("id") String id) {
         return this.volantesService.getVolanteById(id);
     }
 
     @DeleteMapping("/volantes/{id}")
-    private Mono<ResponseEntity<VolantesModel>> deleteVolanteById(@PathVariable("id") String id) {
+    private Mono<ResponseEntity<VolantesDTO>> deleteVolanteById(@PathVariable("id") String id) {
         return this.volantesService.deleteVolanteById(id)
             .flatMap(volante -> Mono.just(ResponseEntity.ok(volante)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
     @PutMapping("/volantes/{id}")
-    private Mono<ResponseEntity<VolantesModel>> updateVolanteById(@PathVariable("id") String id, @RequestBody VolantesModel volantesModel) {
+    private Mono<ResponseEntity<VolantesDTO>> updateVolanteById(@PathVariable("id") String id, @RequestBody VolantesDTO volantesModel) {
         return this.volantesService.updateVolanteById(id, volantesModel)
             .flatMap(volante -> Mono.just(ResponseEntity.ok(volante)))
             .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));

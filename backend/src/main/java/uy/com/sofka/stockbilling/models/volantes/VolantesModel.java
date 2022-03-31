@@ -25,6 +25,15 @@ public class VolantesModel {
         this.listaProductos = listaProductos;
     }
 
+    public VolantesModel VendedoresDTOToModel(VolantesDTO volantesDTO) {
+        VolantesModel volantesModel = new VolantesModel(
+            volantesDTO.getIdProveedor(),
+            volantesDTO.getFechaVolante(),
+            volantesDTO.getListaProductos()
+        );
+        return volantesModel;
+    }
+
     public String getFechaVolante() {
         return fechaVolante;
     }

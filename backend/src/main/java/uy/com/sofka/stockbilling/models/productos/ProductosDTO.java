@@ -26,7 +26,7 @@ public class ProductosDTO {
         this.stockMaximo = stockMaximo;
     }
 
-    public ProductosDTO FacturasToDTO(ProductosModel productosModel) {
+    public ProductosDTO ProductosToDTO(ProductosModel productosModel) {
         ProductosDTO productosDTO = new ProductosDTO();
         productosDTO.setCategoriaProducto(productosModel.getCategoriaProducto());
         productosDTO.setDescripcionProducto(productosModel.getDescripcionProducto());
@@ -39,7 +39,7 @@ public class ProductosDTO {
         return productosDTO;
     }
 
-    public Mono<ProductosDTO> FacturasModelToDTO(Mono<ProductosModel> productosModel) {
+    public Mono<ProductosDTO> ProductosModelToDTO(Mono<ProductosModel> productosModel) {
         return productosModel.map(producto -> {
             ProductosDTO productosDTO = new ProductosDTO();
             productosDTO.setCategoriaProducto(producto.getCategoriaProducto());
@@ -53,7 +53,7 @@ public class ProductosDTO {
         });
     }
 
-    public Flux<ProductosDTO> FacturasModelListToDTO(Flux<ProductosModel> productosModel) {
+    public Flux<ProductosDTO> ProductosModelListToDTO(Flux<ProductosModel> productosModel) {
         return productosModel.map(producto -> {
             ProductosDTO productosDTO = new ProductosDTO();
             productosDTO.setCategoriaProducto(producto.getCategoriaProducto());
