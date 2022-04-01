@@ -1,5 +1,4 @@
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
-import { useEffect } from "react";
 
 
 const actionLog = (auth, email, password) => async(dispatch) => {
@@ -59,14 +58,28 @@ const actionGetProducts = () => async(dispatch) => {
     }
 }
 
-const actionAddProduct = () => async(dispatch) => {
+const actionAddProduct = (nombreProducto, 
+                        precioProducto, 
+                        descripcionProducto, 
+                        stockProducto, 
+                        categoriaProducto, 
+                        stockMinimo, 
+                        stockMaximo) => async(dispatch) => {
     try {
-        const requestOptions = {
+        const request = {
+            nombreProducto: nombreProducto,
+            precioProducto: precioProducto,
+            descripcionProducto: descripcionProducto,
+            stockProducto: stockProducto,
+            categoriaProducto: categoriaProducto,
+            stockMinimo: stockMinimo,
+            stockMaximo: stockMaximo
+        }
+        fetch("http://localhost:8080/productos", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title: "React POST" })
-        };
-        fetch("http://localhost:8080/productos", requestOptions)
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json" }
+        })
             .then(response => response.json())
             .then(data => dispatch({
                 type: "addProduct",
@@ -78,5 +91,5 @@ const actionAddProduct = () => async(dispatch) => {
 }
 
 export const action = () => {
-    return { actionLog, actionDeslog, actionRegister, actionGetProducts }
+    return { actionLog, actionDeslog, actionRegister, actionGetProducts, actionAddProduct }
 }
