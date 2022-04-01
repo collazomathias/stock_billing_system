@@ -1,35 +1,27 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { action } from "../actions/action";
-import firebaseApp from "../firebase/credentials";
-import { getAuth } from "firebase/auth";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { Inventory } from "../components/Inventory";
+import { Navbar } from "../components/Navbar";
+import "../assets/styles/containers/Dashboard.scss";
 
 const Dashboard = () => {
 
-    const { alertMessage, userLogged } = useSelector(state => state.userReducer);
+    const { userLogged } = useSelector(state => state.userReducer);
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { actionDeslog } = action();
-
-    const auth = getAuth(firebaseApp);
-
-    const userDeslog = async(event) => {
-        event.preventDefault();
-        dispatch(actionDeslog(auth));
-    }
-
     useEffect(() => {
-        if(!userLogged) navigate("/login");
-    }, [userLogged])
+        if(!userLogged) navigate("/");
+    }, [navigate, userLogged])
     
 
     return (
         <>
-            <div>Dashboard</div>
-            <button onClick={userDeslog}>SIGN OUT</button>
+            <Navbar />
+            <div className="dashboard-container">
+                <Inventory />
+            </div>
         </>
     );
 }

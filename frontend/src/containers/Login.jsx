@@ -22,7 +22,7 @@ const Login = () => {
 
     useEffect(() => {
         if(userLogged) navigate("/dashboard");
-    }, [userLogged])
+    }, [navigate, userLogged])
 
     useEffect(() => {
         if(alertMessage) setErrorMessage(alertMessage);
@@ -49,7 +49,7 @@ const Login = () => {
                 <form>
                     <div className="login-container">
                         <div className="login-label-input-container">
-                            <label className="login-label" htmlFor="user-input">Email</label>
+                            <label className="login-label">Email</label>
                             <input className="login-input" type="email" placeholder="Text your email here.." 
                                 onChange={(event) => setEmail(event.target.value)}
                             />

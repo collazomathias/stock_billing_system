@@ -1,0 +1,30 @@
+.navbar-container {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+    border-bottom: 0.3px solid gray;
+}
+
+.navbar-container h3 {
+    font-size: 18px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: gray;
+}
+
+.navbar-container span {
+    color: cornflowerblue;
+}
+
+.navbar-container button {
+    width: 120px;
+    height: 45px;
+    background-color: #ed4337db;
+    color: white;
+    font-size: 18px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: none;
+    margin: 20px;
+}
