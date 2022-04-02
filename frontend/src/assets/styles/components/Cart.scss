@@ -1,0 +1,49 @@
+.cart-container {
+    width: 60%;
+    margin-left: 5%;
+}
+
+.bill-container {
+    width: 100%;
+    text-align: center;
+    height: 45px;
+    background-color: white;
+    color: gray;
+    border-radius: 4px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    margin-top: 20px;
+    padding: 0 30px;
+}
+
+.total-amount {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    background-color: white;
+    font-size: 18px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.total-amount span {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    background-color: white;
+    font-size: 18px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.generate-bill-button {
+    width: 160px;
+    height: 35px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    font-size: 18px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+

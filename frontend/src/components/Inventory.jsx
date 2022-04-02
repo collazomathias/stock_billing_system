@@ -49,15 +49,12 @@ export const Inventory = () => {
             stockProducto, descripcionProducto, stockMinimo, stockMaximo, cantProducts));
     }
 
-    console.log(productsCart);
-    console.log(cartTotalPrice);
-
     const columns = [
         {
             name: "Product",
             selector: row => row.nombreProducto,
             sortable: true,
-            grow: 3
+            grow: 4
         },
         {
             name: "Price",
@@ -112,14 +109,14 @@ export const Inventory = () => {
                 </>
                 :
                 <>
-                    <button onClick={() => setFormStatus(true)} className="add-product-button">ADD PRODUCT</button>
+                    <button onClick={() => setFormStatus(true)} className="add-product-button">ADD A PRODUCT</button>
                     <DataTable className="table-responsive"
                         columns={columns}
                         data={products}
                         title="Products"
                         pagination
                         fixedHeader
-                        fixedHeaderScrollHeight="600px"
+                        fixedHeaderScrollHeight="100%"
                     />
                 </>
             }

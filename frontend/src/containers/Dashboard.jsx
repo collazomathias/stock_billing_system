@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { Inventory } from "../components/Inventory";
 import { Navbar } from "../components/Navbar";
 import "../assets/styles/containers/Dashboard.scss";
+import { Cart } from "../components/Cart";
 
 const Dashboard = () => {
 
@@ -21,6 +22,7 @@ const Dashboard = () => {
             <Navbar />
             <div className="dashboard-container">
                 <Inventory />
+                <Cart />
             </div>
         </>
     );
