@@ -112,6 +112,36 @@ const actionAddProductToCart = (idProducto,
                                     
 }
 
+const actionCreateBill = (fechaFactura, 
+                        nombreCliente, 
+                        vendedorFactura, 
+                        stockProducto, 
+                        listaProductos, 
+                        precioTotal) => async(dispatch) => {
+    try {
+        const request = {
+            fechaFactura: fechaFactura,
+            nombreCliente: nombreCliente,
+            vendedorFactura: vendedorFactura,
+            stockProducto: stockProducto,
+            listaProductos: listaProductos,
+            precioTotal: precioTotal
+        }
+        fetch("http://localhost:8080/facturas", {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(response => response.json())
+            .then(data => dispatch({
+                type: "addBill",
+                payload: data
+            }));
+    } catch(error) {
+        console.log(error.message);
+    }
+}
+
 export const action = () => {
-    return { actionAddProductToCart, actionLog, actionDeslog, actionRegister, actionGetProducts, actionAddProduct }
+    return { actionCreateBill, actionAddProductToCart, actionLog, actionDeslog, actionRegister, actionGetProducts, actionAddProduct }
 }

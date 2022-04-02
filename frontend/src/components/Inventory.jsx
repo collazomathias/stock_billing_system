@@ -25,7 +25,7 @@ export const Inventory = () => {
         dispatch(actionGetProducts())
     }, [actionGetProducts, dispatch]);
 
-    const { products, productsCart, cartTotalPrice } = useSelector(state => state.productReducer);
+    const { products } = useSelector(state => state.productReducer);
 
     const addProduct = async() => {
         dispatch(actionAddProduct(nombreProducto, 
