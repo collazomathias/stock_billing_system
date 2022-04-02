@@ -112,10 +112,9 @@ const actionAddProductToCart = (idProducto,
                                     
 }
 
-const actionCreateBill = (fechaFactura, 
+const actionAddBill = (fechaFactura, 
                         nombreCliente, 
                         vendedorFactura, 
-                        stockProducto, 
                         listaProductos, 
                         precioTotal) => async(dispatch) => {
     try {
@@ -123,7 +122,6 @@ const actionCreateBill = (fechaFactura,
             fechaFactura: fechaFactura,
             nombreCliente: nombreCliente,
             vendedorFactura: vendedorFactura,
-            stockProducto: stockProducto,
             listaProductos: listaProductos,
             precioTotal: precioTotal
         }
@@ -143,5 +141,5 @@ const actionCreateBill = (fechaFactura,
 }
 
 export const action = () => {
-    return { actionCreateBill, actionAddProductToCart, actionLog, actionDeslog, actionRegister, actionGetProducts, actionAddProduct }
+    return { actionAddBill, actionAddProductToCart, actionLog, actionDeslog, actionRegister, actionGetProducts, actionAddProduct }
 }

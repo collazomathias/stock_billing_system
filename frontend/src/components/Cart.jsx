@@ -1,9 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DataTable from "react-data-table-component";
 import "../assets/styles/components/Cart.scss";
+import { action } from "../actions/action";
 
 export const Cart = () => {
+
+    const { userLogged } = useSelector(state => state.userReducer);
+
+    const { actionAddBill } = action();
 
     const { productsCart, cartTotalPrice } = useSelector(state => state.productReducer);
 
@@ -26,6 +31,12 @@ export const Cart = () => {
         }
     ]
 
+    const dispatch = useDispatch();
+
+    const addBill = async() => {
+        dispatch(actionAddBill("02/04/2022", "Juan", userLogged, productsCart, cartTotalPrice));
+    }
+
     return (
         <div className="cart-container">
             <DataTable
@@ -37,7 +48,7 @@ export const Cart = () => {
             />
             <div className="bill-container">
                 <h4 className="total-amount">Total amount: <span>${cartTotalPrice}</span></h4>
-                <button className="generate-bill-button">GENERATE BILL</button>
+                <button onClick={() => addBill()} className="generate-bill-button">GENERATE BILL</button>
             </div>
         </div>
     );
