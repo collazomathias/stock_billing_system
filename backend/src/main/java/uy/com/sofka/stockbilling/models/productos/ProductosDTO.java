@@ -49,6 +49,7 @@ public class ProductosDTO {
             productosDTO.setPrecioProducto(producto.getPrecioProducto());
             productosDTO.setStockMaximo(producto.getStockMaximo());
             productosDTO.setStockMinimo(producto.getStockMinimo());
+            productosDTO.setStockProducto(producto.getStockProducto());
             return productosDTO;
         });
     }

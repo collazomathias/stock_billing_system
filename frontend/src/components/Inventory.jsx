@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { action } from "../actions/action";
-import DataTable from "react-data-table-component";
 import "../assets/styles/components/Inventory.scss";
+import DataTable from "react-data-table-component";
 
 export const Inventory = () => {
 
@@ -14,8 +14,6 @@ export const Inventory = () => {
     const [ stockMinimo, setStockMinimo ] = useState("");
     const [ stockMaximo, setStockMaximo ] = useState("");
 
-    const { products } = useSelector(state => state.productReducer);
-
     const { actionGetProducts, actionAddProduct } = action();
 
     const [ formStatus, setFormStatus ] = useState(false);
@@ -23,11 +21,9 @@ export const Inventory = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(actionGetProducts())
-    }, [actionGetProducts, dispatch]);
+    }, []);
 
-    const rechargeList = async() => {
-        dispatch(actionGetProducts())
-    }
+    const { products } = useSelector(state => state.productReducer);
 
     const addProduct = async() => {
         dispatch(actionAddProduct(nombreProducto, 
@@ -39,6 +35,10 @@ export const Inventory = () => {
                         stockMaximo));
     }
 
+    const addProductToBill = async() => {
+
+    }
+
     const columns = [
         {
             name: "ID",
@@ -46,17 +46,23 @@ export const Inventory = () => {
             sortable: true
         },
         {
-            name: "Producto",
+            name: "Product",
             selector: row => row.nombreProducto,
             sortable: true,
             grow: 3
         },
         {
-            name: "Precio",
+            name: "Price",
             selector: row => row.precioProducto,
             sortable: true
+        },
+        {
+            name: "Action",
+            cell: row => <button className="add-button" id={row.idProducto}>ADD</button>
         }
     ]
+
+    console.log(products);
 
     return (
         <div className="inventory-container">
@@ -78,19 +84,20 @@ export const Inventory = () => {
                         <input onChange={(event) => setStockMinimo(event.target.value)} className="add-product-input" type="text" />
                         <label className="add-product-label">Maximum stock (for alerts)</label>
                         <input onChange={(event) => setStockMaximo(event.target.value)} className="add-product-input" type="text" />
-                        <button onClick={() => { addProduct() }} className="add-product-button green">ADD PRODUCT</button>
+                        <button onClick={() => { addProduct(); setFormStatus(false); }} className="add-product-button green">ADD PRODUCT</button>
                     </div>
                 </>
                 :
                 <>
                     <button onClick={() => setFormStatus(true)} className="add-product-button">ADD PRODUCT</button>
-                    <DataTable 
-                        columns={columns} 
-                        data={products} 
-                        title="Products" 
-                        pagination 
+                    <DataTable
+                        columns={columns}
+                        data={products}
+                        title="Products"
+                        pagination
                         fixedHeader
-                        fixedHeaderScrollHeight="100%" />
+                        fixedHeaderScrollHeight="600px"
+                    />
                 </>
             }
         </div>

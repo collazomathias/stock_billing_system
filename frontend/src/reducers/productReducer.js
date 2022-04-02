@@ -5,7 +5,9 @@ const initialState = {
 export const productReducer = (state = initialState, action) => {
     switch(action.type){
         case "addProduct":
-            return { ...state, products: action.payload }
+            const products = ([...state.products, action.payload]);
+            console.log(products)
+            return { ...state, products: products }
         case "removeProduct":
             return { state }
         case "updateProduct":
