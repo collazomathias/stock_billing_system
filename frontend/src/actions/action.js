@@ -90,6 +90,28 @@ const actionAddProduct = (nombreProducto,
     }
 }
 
+const actionAddProductToCart = (idProducto, 
+                                nombreProducto, 
+                                precioProducto, 
+                                categoriaProducto, 
+                                stockProducto, 
+                                descripcionProducto,
+                                stockMinimo,
+                                stockMaximo,
+                                cantProducts) => async(dispatch) => {
+    try {
+        const product = {idProducto, nombreProducto, precioProducto, 
+            categoriaProducto, stockProducto, descripcionProducto, stockMinimo, stockMaximo, cantProducts};
+        dispatch({
+            type: "addProductToCart",
+            payload: product
+        })
+    } catch(error) {
+        console.log(error.message);
+    }
+                                    
+}
+
 export const action = () => {
-    return { actionLog, actionDeslog, actionRegister, actionGetProducts, actionAddProduct }
+    return { actionAddProductToCart, actionLog, actionDeslog, actionRegister, actionGetProducts, actionAddProduct }
 }

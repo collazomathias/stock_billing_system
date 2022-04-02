@@ -14,16 +14,18 @@ export const Inventory = () => {
     const [ stockMinimo, setStockMinimo ] = useState("");
     const [ stockMaximo, setStockMaximo ] = useState("");
 
-    const { actionGetProducts, actionAddProduct } = action();
+    const { actionGetProducts, actionAddProduct, actionAddProductToCart } = action();
 
     const [ formStatus, setFormStatus ] = useState(false);
+
+    const [ cantProducts, setCantProducts ] = useState(1);
     
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(actionGetProducts())
-    }, []);
+    }, [actionGetProducts, dispatch]);
 
-    const { products } = useSelector(state => state.productReducer);
+    const { products, productsCart, cartTotalPrice } = useSelector(state => state.productReducer);
 
     const addProduct = async() => {
         dispatch(actionAddProduct(nombreProducto, 
@@ -35,16 +37,22 @@ export const Inventory = () => {
                         stockMaximo));
     }
 
-    const addProductToBill = async() => {
-
+    const addProductToCart = async(idProducto,
+                                nombreProducto, 
+                                precioProducto, 
+                                categoriaProducto, 
+                                stockProducto, 
+                                descripcionProducto,
+                                stockMinimo,
+                                stockMaximo) => {
+        dispatch(actionAddProductToCart(idProducto, nombreProducto, precioProducto, categoriaProducto, 
+            stockProducto, descripcionProducto, stockMinimo, stockMaximo, cantProducts));
     }
 
+    console.log(productsCart);
+    console.log(cartTotalPrice);
+
     const columns = [
-        {
-            name: "ID",
-            selector: row => row.idProducto,
-            sortable: true
-        },
         {
             name: "Product",
             selector: row => row.nombreProducto,
@@ -57,12 +65,27 @@ export const Inventory = () => {
             sortable: true
         },
         {
-            name: "Action",
-            cell: row => <button className="add-button" id={row.idProducto}>ADD</button>
+            cell: row => <input 
+                        className="add-input"
+                        placeholder="Quantity" 
+                        onFocus={ (event) => setCantProducts(event.target.value) }
+                        onChange={ (event) => setCantProducts(event.target.value) } />,
+            center: true
+        },
+        {
+            cell: row => <button 
+            className="add-button"
+            onClick={() => addProductToCart(row.idProducto, 
+                                            row.nombreProducto, 
+                                            row.precioProducto, 
+                                            row.categoriaProducto,
+                                            row.stockProducto,
+                                            row.descripcionProducto,
+                                            row.stockMinimo,
+                                            row.stockMaximo)}>ADD</button>,
+            center: true
         }
     ]
-
-    console.log(products);
 
     return (
         <div className="inventory-container">
@@ -90,7 +113,7 @@ export const Inventory = () => {
                 :
                 <>
                     <button onClick={() => setFormStatus(true)} className="add-product-button">ADD PRODUCT</button>
-                    <DataTable
+                    <DataTable className="table-responsive"
                         columns={columns}
                         data={products}
                         title="Products"
