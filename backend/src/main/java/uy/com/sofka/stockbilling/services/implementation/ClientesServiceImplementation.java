@@ -21,7 +21,7 @@ public class ClientesServiceImplementation implements ClientesService {
 
     @Override
     public Mono<ClientesDTO> addNewClient(ClientesDTO clientesDTO) {
-        Mono<ClientesModel> newClient =  clientesRepository.save(clientesModel.ClientesDTOToModel(clientesDTO));
+        Mono<ClientesModel> newClient = clientesRepository.save(clientesModel.ClientesDTOToModel(clientesDTO));
         return clientesDTO.ClientesModelToDTO(newClient);
     }
 
